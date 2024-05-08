@@ -7,14 +7,19 @@ import { buildComponents, assetBundle, AssetLevel, AssetLoader } from '@alilc/lo
 import ReactRenderer from '@alilc/lowcode-react-renderer';
 import { injectComponents } from '@alilc/lowcode-plugin-inject';
 import appHelper from './appHelper';
-import { getProjectSchemaFromLocalStorage, getPackagesFromLocalStorage, getPreviewLocale, setPreviewLocale } from './services/mockService';
+import {
+  getProjectSchemaFromLocalStorage,
+  getPackagesFromLocalStorage,
+  getPreviewLocale,
+  setPreviewLocale,
+} from './services/mockService';
 
 const getScenarioName = function () {
   if (location.search) {
     return new URLSearchParams(location.search.slice(1)).get('scenarioName') || 'general';
   }
   return 'general';
-}
+};
 
 const SamplePreview = () => {
   const [data, setData] = useState({});
@@ -51,8 +56,11 @@ const SamplePreview = () => {
     // TODO asset may cause pollution
     const assetLoader = new AssetLoader();
     await assetLoader.load(libraryAsset);
-    const components = await injectComponents(buildComponents(libraryMap, componentsMap));
-
+    
+    // injectComponents 的使用一般在开发环境做调试注入使用（详细见文档），一般纯净的预览环境是不依赖此插件
+    // The use of injectComponents is generally used for debugging and injection in the development environment (see the documentation for details). The generally destroyed preview environment does not rely on this plug-in.
+    // const components = await injectComponents(buildComponents(libraryMap, componentsMap));
+    const components = buildComponents(libraryMap, componentsMap);
     setData({
       schema: pageSchema,
       components,
@@ -72,7 +80,8 @@ const SamplePreview = () => {
   if (!(window as any).setPreviewLocale) {
     // for demo use only, can use this in console to switch language for i18n test
     // 在控制台 window.setPreviewLocale('en-US') 或 window.setPreviewLocale('zh-CN') 查看切换效果
-    (window as any).setPreviewLocale = (locale:string) => setPreviewLocale(getScenarioName(), locale);
+    (window as any).setPreviewLocale = (locale: string) =>
+      setPreviewLocale(getScenarioName(), locale);
   }
 
   function customizer(objValue: [], srcValue: []) {
