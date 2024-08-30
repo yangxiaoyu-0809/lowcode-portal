@@ -32,6 +32,7 @@
     "@alilc/lowcode-setter-behavior": "^1.0.0",
     "@alilc/lowcode-setter-title": "^1.0.2",
     "antd": "^4.21.4",
+    "html2canvas": "^1.4.1",
     "moment": "^2.29.3",
     "uuid": "^8.3.2"
   },

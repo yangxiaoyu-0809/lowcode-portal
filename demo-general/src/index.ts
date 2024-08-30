@@ -1,4 +1,4 @@
-import { init, plugins } from '@alilc/lowcode-engine';
+import { init, plugins, material, config } from '@alilc/lowcode-engine';
 import { createFetchHandler } from '@alilc/lowcode-datasource-fetch-handler'
 import EditorInitPlugin from './plugins/plugin-editor-init';
 import UndoRedoPlugin from '@alilc/lowcode-plugin-undo-redo';
@@ -21,10 +21,24 @@ import LogoSamplePlugin from './plugins/plugin-logo-sample';
 import SimulatorLocalePlugin from './plugins/plugin-simulator-locale';
 import lowcodePlugin from './plugins/plugin-lowcode-component';
 import appHelper from './appHelper';
+import { listBlocks, createBlock } from './apis/block';
 import './global.scss';
+
+// import BlockPane from '@alilc/lowcode-plugin-block';
+// import { default as saveAsBlock } from '@alilc/action-block';
+
+//将区块相关代码改为本地化，进行优化
+import saveAsBlock from './actions/block';
+import BlockPane from './plugins/plugin-block';
 
 async function registerPlugins() {
   await plugins.register(InjectPlugin);
+
+  // 注册保存为区块工作条
+  material.addBuiltinComponentAction(saveAsBlock);
+  //注册左侧区块面板
+  await plugins.register(BlockPane);
+
 
   await plugins.register(EditorInitPlugin, {
     scenarioName: 'general',
@@ -100,7 +114,19 @@ async function registerPlugins() {
   await plugins.register(lowcodePlugin);
 };
 
+//区块相关
+function setupConfig() {
+  config.set('apiList', {
+    block: {
+      listBlocks,
+      createBlock
+    },
+  })
+}
+
+
 (async function main() {
+  setupConfig();
   await registerPlugins();
 
   init(document.getElementById('lce-container')!, {
