@@ -1,10 +1,13 @@
 import * as React from 'react';
 
 import { common, project } from '@alilc/lowcode-engine';
-import { Loading, Box, Divider } from '@alifd/next';
+import { Loading, Box, Divider, Search} from '@alifd/next';
 
 import { default as BlockCard } from '../card';
 import { default as store } from '../store';
+
+import { Collapse } from 'antd';
+const { Panel } = Collapse;
 
 import './index.scss';
 
@@ -33,19 +36,18 @@ export const BlockPane = (props: BlockPaneProps) => {
     const { api } = props;
     const [ blocks, setBlocks ] = useState();
     const { listBlocks } = api;
+    const fetchBlocks = async (search) => {
+        const res = await listBlocks(search);
+        if (res?.code) {
+            console.error('list block failed: ', res);
+            return;
+        }
+        console.log('res in plugin: ', res);
+        store.init(res);
+        setBlocks(res);
+    };
     useEffect(() => {
-        const fetchBlocks = async () => {
-            const res = await listBlocks();
-            if (res?.code) {
-                console.error('list block failed: ', res);
-                return;
-            }
-            console.log('res in plugin: ', res);
-            store.init(res);
-            setBlocks(res);
-        };
-
-        fetchBlocks();
+        fetchBlocks('');
     }, []);
 
     const registerAdditive = (shell: HTMLDivElement | null) => {
@@ -101,16 +103,35 @@ export const BlockPane = (props: BlockPaneProps) => {
         shell.dataset.registered = 'true';
     };
 
+    // 搜索区块
+    const onBlockSearch = (search) => {
+        fetchBlocks(search);
+        console.log('点击了搜索区块按钮')
+    }
+
     if (!blocks?.length) {
         return <div className='block-pane-loading'><Loading /></div>
     }
 
-    return <div className='block-pane' ref={registerAdditive}><Box direction='row' wrap>
-        {
-            blocks.map(item => <BlockCard id={item.id} title={item.title} screenshot={item.screenshot || DEFAULT_SCREENSHOT} />)
-        }
-    </Box>
-    </div>;
+    return <>
+        <div className='searchFixedCon'>
+            <Search shape="simple" placeholder="搜索区块或分组" onSearch={onBlockSearch}/>
+        </div>
+        <div className='block-pane' ref={registerAdditive}>
+            {
+                blocks?.map(item =>
+                    <>
+                        <div className='groupName'>{item.groupName}</div>
+                        <Box direction='row' wrap>
+                            {
+                                item.list.map(subItem => <BlockCard id={subItem.id} title={subItem.title} screenshot={subItem.screenshot || DEFAULT_SCREENSHOT} />)
+                            }
+                        </Box>
+                    </>
+                )
+            }
+        </div>
+    </>;
 }
 
 export default BlockPane;

@@ -1,22 +1,18 @@
 import { request } from "src/utils";
 
-const BASE_URL = '/api/v1';
+const BASE_URL = 'http://localhost:7001/api';
 
-export const listBlocks = async () => {
-  //此处为从接口获取，暂时注释，等接口完善后再补充
-  // const url = `${BASE_URL}/blocks`;
-  // const res = await request(url);
-  // console.log('res: ', res);
-  // if (res.code) {
-  //   console.error('list block failed: ', res);
-  //   return;
-  // }
-  // return res.data;
+// 带搜索条件的区块列表
+export const listBlocks = async (params) => {
+  const url = `${BASE_URL}/blocks?search=${params}`;
+  const res = await request(url);
+  console.log('res: ', res);
+  if (res.code) {
+    console.error('list block failed: ', res);
+    return;
+  }
+  return res.data;
 
-
-  //演示环境改为加载静态数据
-  let data = []
-  return data
 }
 
 export const getBlockById = async (id) => {
@@ -43,6 +39,34 @@ export const createBlock = async (block) => {
   console.log('res: ', res);
   if (res.code) {
     console.error('create block failed: ', res);
+    return;
+  }
+  return res.data;
+}
+
+//新建分组
+export const addGroup = async (group) => {
+  const url = `${BASE_URL}/groups`;
+  const res = await (await fetch(url, {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({group})
+  })).json()
+  console.log('res: ', res);
+  if (res.code) {
+    console.error('create block failed: ', res);
+    return;
+  }
+  return res.data;
+}
+//获取所有分组列表
+export const groupList = async () => {
+  const url = `${BASE_URL}/groups`;
+  const res = await request(url);
+  if (res.code) {
+    console.error('list block failed: ', res);
     return;
   }
   return res.data;
