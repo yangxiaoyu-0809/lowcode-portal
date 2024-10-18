@@ -36,12 +36,12 @@ export const createBlock = async (block) => {
    },
     body: JSON.stringify({block})
 })).json()
-  console.log('res: ', res);
-  if (res.code) {
-    console.error('create block failed: ', res);
-    return;
-  }
-  return res.data;
+  // console.log('res: ', res);
+  // if (res.code) {
+  //   console.error('create block failed: ', res);
+  //   return;
+  // }
+  return res;
 }
 //根据id删除区块
 export const delBlock = async (id) => {
@@ -63,20 +63,20 @@ export const addGroup = async (group) => {
     },
     body: JSON.stringify({group})
   })).json()
-  console.log('res: ', res);
-  if (res.code) {
-    console.error('create block failed: ', res);
-    return;
-  }
-  return res.data;
+  // console.log('res: ', res);
+  // if (res.code) {
+  //   console.error('create block failed: ', res);
+  //   return;
+  // }
+  return res;
 }
 //获取所有分组列表
 export const groupList = async () => {
   const url = `${BASE_URL}/groups`;
   const res = await request(url);
-  if (res.code) {
-    console.error('list block failed: ', res);
-    return;
-  }
-  return res.data;
+  // if (res.code) {
+  //   console.error('list block failed: ', res);
+  //   return;
+  // }
+  return res;
 }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Node } from '@alilc/lowcode-engine';
+import { Node, event } from '@alilc/lowcode-engine';
 import { Dialog, Form, Input, Button, Select, Icon, Balloon, Notification, Field} from '@alifd/next';
 import { default as html2canvas } from 'html2canvas';
 import { Image } from 'antd';
@@ -24,6 +24,7 @@ const SaveAsBlock = (props: SaveAsBlockProps) => {
 
     // const [ groupName, setGroupName ] = React.useState('');
     const [ groups, setGroups ] = React.useState([]);
+
     React.useEffect(() => {
         const generateImage = async () => {
             let dom2 = node.getDOMNode();
@@ -52,8 +53,17 @@ const SaveAsBlock = (props: SaveAsBlockProps) => {
             screenshot: src,
             remark
         });
-        console.log('保存后的返回res: ', res);
-        dialog?.hide();
+        if(res.code === 0){
+            //去刷新左侧的区块面板
+            event.emit('BlockChanged');
+            dialog?.hide();
+        }else{
+            Notification.open({
+                title: '',
+                content:res.message,
+                type:'error',
+            });
+        }
     }
 
     // 新建保存分组提交
@@ -62,29 +72,24 @@ const SaveAsBlock = (props: SaveAsBlockProps) => {
         const res = await addGroup({
             name:values.groupName
         })
-        //刷新分组下拉数据
-        getGroupList()
-
         //这里存在问题，先注释一下，后期优化
-        // if(res.code === 0){
-        //     //关闭小弹窗
-        //
-        //     //刷新分组下拉数据
-        //     getGroupList()
-        //
-        // }else{
-        //     Notification.open({
-        //         title: '',
-        //         content:res.message,
-        //         type:'error',
-        //     });
-        // }
+        if(res.code === 0){
+            //关闭小弹窗
+
+            //刷新分组下拉数据
+            getGroupList()
+        }else{
+            Notification.open({
+                title: '',
+                content:res.message,
+                type:'error',
+            });
+        }
     }
     //获取全部分组列表
     const getGroupList = async () => {
         const res = await groupList()
-        console.log('获取到的分组列表',res)
-        setGroups(res)
+        setGroups(res.data)
     }
 
     return <div className='popCon'>

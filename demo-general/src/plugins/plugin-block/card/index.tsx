@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { event } from '@alilc/lowcode-engine';
 import {Balloon, Button, Dialog, Form, Icon, Input, Message, Select} from "@alifd/next";
 import { Image } from 'antd';
 import 'antd/dist/antd.css';
@@ -50,8 +51,10 @@ const BlockCard = (props: BlockCardProps) => {
         if(res.code === 0){
             Message.success('删除成功！')
             setPopVisible(false)
+            //去刷新左侧的区块面板
+            event.emit('BlockChanged');
         }else{
-            Message.error(res.msg || '操作失败，请稍后重试')
+            Message.error(res.message || '操作失败，请稍后重试')
         }
     }
     return <><div className='block-card snippet' data-id={id}>

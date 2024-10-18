@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { common, project } from '@alilc/lowcode-engine';
+import { common, project, event } from '@alilc/lowcode-engine';
 import { Loading, Box, Divider, Search} from '@alifd/next';
 
 import { default as BlockCard } from '../card';
@@ -47,6 +47,9 @@ export const BlockPane = (props: BlockPaneProps) => {
         setBlocks(res);
     };
     useEffect(() => {
+        event.on('common:BlockChanged', () => {
+            fetchBlocks('');
+        })
         fetchBlocks('');
     }, []);
 
