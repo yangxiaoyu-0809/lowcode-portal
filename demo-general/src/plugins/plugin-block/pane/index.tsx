@@ -6,7 +6,7 @@ import { Loading, Box, Divider, Search} from '@alifd/next';
 import { default as BlockCard } from '../card';
 import { default as store } from '../store';
 
-import { Collapse } from 'antd';
+import {Collapse, Empty} from 'antd';
 const { Panel } = Collapse;
 
 import './index.scss';
@@ -47,6 +47,7 @@ export const BlockPane = (props: BlockPaneProps) => {
         setBlocks(res);
     };
     useEffect(() => {
+        //其余页面调用的刷新方法
         event.on('common:BlockChanged', () => {
             fetchBlocks('');
         })
@@ -113,7 +114,8 @@ export const BlockPane = (props: BlockPaneProps) => {
     }
 
     if (!blocks?.length) {
-        return <div className='block-pane-loading'><Loading /></div>
+        // return <div className='block-pane-loading'><Loading /></div>
+        return <div className='emptyCon'><Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='暂无数据'/></div>
     }
 
     return <>

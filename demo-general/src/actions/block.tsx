@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Node, event } from '@alilc/lowcode-engine';
-import { Dialog, Form, Input, Button, Select, Icon, Balloon, Notification, Field} from '@alifd/next';
+import {Dialog, Form, Input, Button, Select, Icon, Balloon, Notification, Field, Message} from '@alifd/next';
 import { default as html2canvas } from 'html2canvas';
 import { Image } from 'antd';
 import 'antd/dist/antd.css';
@@ -10,7 +10,6 @@ import './index.scss';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
-const showAddGroup = <Button type="primary"><Icon type="add" />{' 新建分组'}</Button>;
 
 interface SaveAsBlockProps {
     node: Node;
@@ -21,9 +20,11 @@ let dialog;
 const SaveAsBlock = (props: SaveAsBlockProps) => {
     const { node } = props;
     const [ src, setSrc ] = React.useState();
+    const showAddGroup = <Button type="primary" onClick={() => setPopVisible(!popVisible)}><Icon type="add" />{' 新建分组'}</Button>;
 
     // const [ groupName, setGroupName ] = React.useState('');
     const [ groups, setGroups ] = React.useState([]);
+    const [ popVisible, setPopVisible] = React.useState(false);
 
     React.useEffect(() => {
         const generateImage = async () => {
@@ -37,7 +38,13 @@ const SaveAsBlock = (props: SaveAsBlockProps) => {
         getGroupList()
         generateImage();
     }, []);
-
+    const onVisibleChange = (visible,type) => {
+        console.log('visible',visible)
+        console.log('type',type)
+        if(type === 'closeClick'){
+            setPopVisible(false)
+        }
+    }
     const save = async (values) => {
         const { name, title, groupId, remark } = values;
         const { schema } = node;
@@ -57,12 +64,9 @@ const SaveAsBlock = (props: SaveAsBlockProps) => {
             //去刷新左侧的区块面板
             event.emit('BlockChanged');
             dialog?.hide();
+            Message.success('保存成功')
         }else{
-            Notification.open({
-                title: '',
-                content:res.message,
-                type:'error',
-            });
+            Message.error(res.message || '操作失败');
         }
     }
 
@@ -74,16 +78,13 @@ const SaveAsBlock = (props: SaveAsBlockProps) => {
         })
         //这里存在问题，先注释一下，后期优化
         if(res.code === 0){
+            Message.success('保存成功')
             //关闭小弹窗
-
+            setPopVisible(false)
             //刷新分组下拉数据
             getGroupList()
         }else{
-            Notification.open({
-                title: '',
-                content:res.message,
-                type:'error',
-            });
+            Message.error(res.message || '操作失败');
         }
     }
     //获取全部分组列表
@@ -121,7 +122,7 @@ const SaveAsBlock = (props: SaveAsBlockProps) => {
                         style={{ marginRight: 8,width:502 }}>
                     { groups.map(item => <Option value={item.id}>{item.name}</Option>) }
                 </Select>
-                <Balloon v2 type="primary" autoFocus trigger={showAddGroup} closable={false}
+                <Balloon v2 type="primary" autoFocus trigger={showAddGroup} visible={popVisible} onVisibleChange={onVisibleChange}
                          title='新建分组' triggerType="click">
                     <Form colon>
                         <FormItem
