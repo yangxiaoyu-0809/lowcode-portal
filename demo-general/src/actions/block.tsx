@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Node } from '@alilc/lowcode-engine';
 import { Dialog, Form, Input, Button, Select, Icon, Balloon, Notification, Field} from '@alifd/next';
 import { default as html2canvas } from 'html2canvas';
+import { Image } from 'antd';
+import 'antd/dist/antd.css';
 
 import { createBlock, addGroup, groupList } from '../apis/block';
 import './index.scss';
@@ -21,12 +23,13 @@ const SaveAsBlock = (props: SaveAsBlockProps) => {
     const [ src, setSrc ] = React.useState();
 
     // const [ groupName, setGroupName ] = React.useState('');
-    const [ groups, setGroups ] = React.useState([{id:1,name:'qqqq'}]);
+    const [ groups, setGroups ] = React.useState([]);
     React.useEffect(() => {
         const generateImage = async () => {
             let dom2 = node.getDOMNode();
             console.log('html2canvas: ', html2canvas);
-            const canvas = await html2canvas?.(dom2, { scale: 0.5 });
+            // const canvas = await html2canvas?.(dom2, { scale: 0.5 });
+            const canvas = await html2canvas?.(dom2);
             const dataUrl = canvas.toDataURL();
             setSrc(dataUrl);
         };
@@ -35,7 +38,7 @@ const SaveAsBlock = (props: SaveAsBlockProps) => {
     }, []);
 
     const save = async (values) => {
-        const { name, title, groupId } = values;
+        const { name, title, groupId, remark } = values;
         const { schema } = node;
         console.log('values: ', values);
         console.log('schema: ', node.schema);
@@ -47,6 +50,7 @@ const SaveAsBlock = (props: SaveAsBlockProps) => {
             groupName:groupItem.name,
             schema: JSON.stringify(schema),
             screenshot: src,
+            remark
         });
         console.log('保存后的返回res: ', res);
         dialog?.hide();
@@ -137,11 +141,15 @@ const SaveAsBlock = (props: SaveAsBlockProps) => {
                 label="缩略图"
             >
                 <div className='block-screenshot'>
-
-                    <img src={src} />
+                    <Image src={src}/>
                 </div>
                 <Input value={src} style={{display: 'none'}}/>
             </FormItem>
+
+            <FormItem label="备注" help="此区块的详细描述" name="remark">
+                <Input.TextArea placeholder="此区块的详细描述" />
+            </FormItem>
+
             <FormItem label=" " colon={false}>
                 <Form.Submit
                     type="primary"

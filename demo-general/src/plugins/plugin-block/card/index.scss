@@ -13,7 +13,7 @@
   border-bottom: 1px solid #eaeaea;
   box-shadow: 0 0 0 0 rgb(0 0 0 / 15%);
   transition: box-shadow 0.2s ease;
-
+  position: relative;
   .next-divider-hoz {
     margin-bottom: 0 !important;
   }
@@ -28,4 +28,17 @@
       object-fit: contain;
     }
   }
+}
+.viewIcon{
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  display: none;
+}
+.block-card:hover .viewIcon{
+  display: block;
+  cursor: pointer;
+}
+.ant-image-preview-mask{
+  z-index: 1002;
 }

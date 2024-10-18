@@ -124,7 +124,7 @@ export const BlockPane = (props: BlockPaneProps) => {
                         <div className='groupName'>{item.groupName}</div>
                         <Box direction='row' wrap>
                             {
-                                item.list.map(subItem => <BlockCard id={subItem.id} title={subItem.title} screenshot={subItem.screenshot || DEFAULT_SCREENSHOT} />)
+                                item.list.map(subItem => <BlockCard id={subItem.id} title={subItem.title} screenshot={subItem.screenshot || DEFAULT_SCREENSHOT} blockData={subItem}/>)
                             }
                         </Box>
                     </>
