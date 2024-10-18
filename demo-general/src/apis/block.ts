@@ -43,6 +43,15 @@ export const createBlock = async (block) => {
   }
   return res.data;
 }
+//根据id删除区块
+export const delBlock = async (id) => {
+  const url = `${BASE_URL}/blocks/${id}`;
+  const res = await (await fetch(url, {
+    method: 'delete'
+  })).json()
+  return res;
+}
+
 
 //新建分组
 export const addGroup = async (group) => {

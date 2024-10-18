@@ -1,8 +1,9 @@
 import * as React from 'react';
-import {Balloon, Dialog, Form, Icon, Input, Select} from "@alifd/next";
+import {Balloon, Button, Dialog, Form, Icon, Input, Message, Select} from "@alifd/next";
 import { Image } from 'antd';
 import 'antd/dist/antd.css';
 import './index.scss';
+import { delBlock } from '../../../apis/block';
 
 const { useState, useEffect } = React;
 const FormItem = Form.Item;
@@ -33,7 +34,26 @@ const BlockCard = (props: BlockCardProps) => {
     const onClose = () => {
         setPopVisible(false)
     }
-
+    //删除该区块
+    const onDelBlock = () => {
+        Dialog.confirm({
+            v2: true,
+            title: '删除',
+            content: '确认要删除该区块吗？',
+            onOk: () => delBlockFun()
+        });
+    }
+    const delBlockFun = async () => {
+        console.log('删除成功')
+        const res = await delBlock(id);
+        console.log('删除操作后的数据',res)
+        if(res.code === 0){
+            Message.success('删除成功！')
+            setPopVisible(false)
+        }else{
+            Message.error(res.msg || '操作失败，请稍后重试')
+        }
+    }
     return <><div className='block-card snippet' data-id={id}>
                 <p className='viewIcon' data-id={'view_'+id} onClick={showViewPop}><Icon type="eye" /></p>
                 <div className='block-card-screenshot'>
@@ -45,8 +65,12 @@ const BlockCard = (props: BlockCardProps) => {
             v2
             title="区块详情"
             visible={popVisible}
-            footer={false}
             onClose={onClose}
+            footer={
+                <Button warning type="primary" onClick={onDelBlock}>
+                    删除该区块
+                </Button>
+            }
         >
             <div style={{width: "500px"}}>
                 <Form {...formItemLayout} colon isPreview>
