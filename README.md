@@ -1,39 +1,69 @@
-## Low-Code Engine Demo
-demo 是一个组合内核、setter、插件、物料的示范工程，因为未经长期生产环境打磨，可能还会有一些各个模块间结合的 bug，希望大家理解~
+# LowcodeEngine-AntDesignPro
+阿里巴巴开源的低代码引擎(Lowcode-Engine)与Ant Design Pro v5整合的Demo。  
 
-## 如何使用
-目前包含多个独立 demo 工程目录，每个 demo 目录都是一个独立的工程，代表一个特定的 demo 场景，可以选择其一单独使用。
+阿里巴巴开源了一个低代码引擎(Lowcode-Engine)，同时也放出了Demo，于是就尝试将Lowcode-Engine整合进了Ant Design Pro v5。  
 
-[推荐]使用yarn
+阿里开源项目的文档对新手不友好的名声在业界也是响当当的（TMD!）。
+
+## Environment Prepare
+
+Install `node_modules`:
+
 ```bash
-git clone git@github.com:alibaba/lowcode-demo.git
-cd lowcode-demo
-cd demo-general
-yarn
-yarn run start
-```
-
-使用npm
-```bash
-git clone git@github.com:alibaba/lowcode-demo.git
-cd lowcode-demo
-cd demo-general
 npm install
-npm run start
 ```
 
-场景列表：
+or
 
-- [general](https://lowcode-engine.cn/demo/demo-general/index.html)：此 demo 尽可能将引擎常用能力展示出来，在试用时建议使用该 demo 工程，其他 demo 均各有侧重展示内容。
-- [basic-fusion](https://lowcode-engine.cn/demo/demo-basic-fusion/index.html)：此 fusion 的元数据描述是很老的版本，只为了示意描述结构，请勿用于生产环境
-- [basic-antd](https://lowcode-engine.cn/demo/demo-basic-antd/index.html)
-- [node-extended-actions](https://lowcode-engine.cn/demo/demo-node-extended-actions/index.html)
-- [next-pro](https://lowcode-engine.cn/demo/demo-next-pro/index.html)
-- [lowcode-component](https://lowcode-engine.cn/demo/demo-lowcode-component/index.html)
-- [lowcode-workspace](https://lowcode-engine.cn/demo/demo-workspace/index.html)
+```bash
+yarn
+```
 
-更多参考资料：
+## Provided Scripts
 
-- [马上玩一下](https://lowcode-engine.cn/demo/demo-general/index.html)
-- [低代码引擎官网](http://lowcode-engine.cn)
-- [引擎主仓库](https://github.com/alibaba/lowcode-engine)
+Ant Design Pro provides some useful script to help you quick start and build with web project, code style check and test.
+
+Scripts provided in `package.json`. It's safe to modify or add additional script:
+
+### Start project
+
+```bash
+npm start
+```
+
+### Build project
+
+```bash
+npm run build
+```
+
+### Check code style
+
+```bash
+npm run lint
+```
+
+You can also use script to auto fix some lint error:
+
+```bash
+npm run lint:fix
+```
+
+### Test code
+
+```bash
+npm test
+```
+
+### 截图  
+
+![Ant Design pro 控制台](https://github.com/hsg4ok/LowcodeEngine-AntDesignPro/blob/main/WX20220528-144059%402x.png)
+
+![低代码编辑器](https://github.com/hsg4ok/LowcodeEngine-AntDesignPro/blob/main/WX20220528-144129@2x.png)
+
+#### 公众号  
+更多信息发布于公众号：代码乾坤 (CoderLand)  
+公众号是否关注无所谓，它只是一个信息发布和沟通的渠道。  
+如果您认为这些信息对您的朋友也有用，请转发给他们。  
+
+![输入图片说明](https://github.com/hsg4ok/LowcodeEngine-AntDesignPro/blob/main/qrcode_for_gh_1786c96024eb_258.jpeg)
