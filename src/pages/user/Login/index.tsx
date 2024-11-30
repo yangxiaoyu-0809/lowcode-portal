@@ -79,14 +79,16 @@ const Login: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.lang} data-lang>
-        {SelectLang && <SelectLang />}
-      </div>
+      {/*语言切换*/}
+      {/*<div className={styles.lang} data-lang>*/}
+      {/*  {SelectLang && <SelectLang />}*/}
+      {/*</div>*/}
+
       <div className={styles.content}>
         <LoginForm
-          logo={<img alt="logo" src="/logo.svg" />}
-          title="Ant Design"
-          subTitle={intl.formatMessage({ id: 'pages.layouts.userLayout.title' })}
+          // logo={<img alt="logo" src="/logo.svg" />}
+          title="低代码管理平台"
+          subTitle='基于lowcode-engine的低代码管理平台'
           initialValues={{
             autoLogin: true,
           }}
@@ -278,7 +280,7 @@ const Login: React.FC = () => {
           </div>
         </LoginForm>
       </div>
-      <Footer />
+      {/*<Footer />*/}
     </div>
   );
 };

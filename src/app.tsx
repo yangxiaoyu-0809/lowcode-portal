@@ -58,7 +58,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     // waterMarkProps: {
     //   content: initialState?.currentUser?.name,
     // },
-    footerRender: () => <Footer />,
+    // footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login
@@ -88,17 +88,19 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         <>
           {children}
           {!props.location?.pathname?.includes('/login') && (
-            <SettingDrawer
-              disableUrlParams
-              enableDarkTheme
-              settings={initialState?.settings}
-              onSettingChange={(settings) => {
-                setInitialState((preInitialState) => ({
-                  ...preInitialState,
-                  settings,
-                }));
-              }}
-            />
+              <></>
+              // 右侧设置按钮，用来设置整体页面风格及相关背景颜色
+            // <SettingDrawer
+            //   disableUrlParams
+            //   enableDarkTheme
+            //   settings={initialState?.settings}
+            //   onSettingChange={(settings) => {
+            //     setInitialState((preInitialState) => ({
+            //       ...preInitialState,
+            //       settings,
+            //     }));
+            //   }}
+            // />
           )}
         </>
       );
