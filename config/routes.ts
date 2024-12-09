@@ -35,6 +35,14 @@
     component: './lowcode',
   },
   {
+    name: '预览',
+    icon: 'table',
+    path: '/preview',
+    layout: false,
+    hideInMenu: true,
+    component: './lowcode/preview',
+  },
+  {
     name: '页面管理',
     icon: 'table',
     path: '/pagesMg',

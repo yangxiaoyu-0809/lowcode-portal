@@ -233,6 +233,15 @@ export function getRoutes() {
         "exact": true
       },
       {
+        "name": "预览",
+        "icon": "table",
+        "path": "/preview",
+        "layout": false,
+        "hideInMenu": true,
+        "component": dynamic({ loader: () => import(/* webpackChunkName: 'p__lowcode__preview' */'/Users/yangxiaoyu/全栈练习项目/lowcode-portal/src/pages/lowcode/preview'), loading: LoadingComponent}),
+        "exact": true
+      },
+      {
         "name": "页面管理",
         "icon": "table",
         "path": "/pagesMg",
