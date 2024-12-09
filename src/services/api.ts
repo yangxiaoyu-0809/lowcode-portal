@@ -19,3 +19,27 @@ export async function getPageList(
         ...(options || {}),
     });
 }
+//根据id获取页面详细信息
+export async function getPageDetails(id: string) {
+    const url = `${baseUrl}/api/pageMg/${id}`;
+    const res = await request(url);
+    if (res.code) {
+        console.error('获取失败: ', res);
+        return;
+    }
+    return res;
+}
+//编辑页面保存
+export async function editPage (info: Object){
+    const url = `${baseUrl}/api/pageMg/edit`;
+    const res = await (await fetch(url, {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({...info})
+    })).json()
+    return res
+}
+
+

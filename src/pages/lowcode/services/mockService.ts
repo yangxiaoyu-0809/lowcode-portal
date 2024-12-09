@@ -4,6 +4,8 @@ import { Message, Dialog } from '@alifd/next';
 import { IPublicTypeProjectSchema, IPublicEnumTransformStage } from '@alilc/lowcode-types';
 import DefaultPageSchema from './defaultPageSchema.json';
 import DefaultI18nSchema from './defaultI18nSchema.json';
+import { getParamValue } from '@/pages/lowcode/utils'
+import {editPage, getPageDetails} from "@/services/api";
 
 const generateProjectSchema = (pageSchema: any, i18nSchema: any): IPublicTypeProjectSchema => {
   return {
@@ -28,17 +30,26 @@ export const saveSchemaToDatabase = async (scenarioName: string) => {
   // await setPackagesToDatabase(scenarioName);
   Message.success('保存成功！');
 }
-const setProjectSchemaToDatabase = (scenarioName: string) => {
+const setProjectSchemaToDatabase = async (scenarioName: string) => {
   if (!scenarioName) {
     console.error('scenarioName is required!');
     return;
   }
+  const id = getParamValue('id')
+  let pageInfo = await getPageDetails(id)
   let pageSchema = JSON.stringify(project.exportSchema(IPublicEnumTransformStage.Save))
-
-
-
-
+  let editInfo = pageInfo.data
+  editInfo.schema = pageSchema;
+  const res = await editPage(editInfo)
+  if(res.code === 0) {
+    Message.success('保存成功！')
+  }else{
+    Message.error('保存失败')
+  }
 }
+
+
+
 //packages保存到数据库
 const setPackagesToDatabase = async (scenarioName: string) => {
   if (!scenarioName) {
@@ -149,3 +160,10 @@ export const setPreviewLocale = (scenarioName: string, locale: string) => {
   window.localStorage.setItem(key, locale || 'zh-CN');
   window.location.reload();
 }
+// 根据id查询数据库中的页面schema
+export const getPageSchemaById = async () => {
+  const id = getParamValue('id')
+  const res = await getPageDetails(id)
+  return res
+}
+

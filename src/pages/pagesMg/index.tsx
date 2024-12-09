@@ -83,7 +83,7 @@ const handleRemove = async (selectedRows: API.RuleListItem[]) => {
 const goToDesign = (nowRows:any) => {
     console.log('当前行信息', nowRows);
     // window.location.href = '/lowcode';
-    window.open('/lowcode', '_blank');
+    window.open(`/lowcode?id=${nowRows.id}`, '_blank');
 }
 
 const PagesMg: React.FC = () => {

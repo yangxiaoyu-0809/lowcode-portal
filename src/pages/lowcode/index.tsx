@@ -64,7 +64,7 @@ async function registerPlugins() {
 
   // 设置内置 setter 和事件绑定、插件绑定面板
   await plugins.register(DefaultSettersRegistryPlugin);
-
+  //左上角logo区域
   await plugins.register(LogoSamplePlugin);
 
   await plugins.register(ComponentPanelPlugin);
@@ -82,8 +82,8 @@ async function registerPlugins() {
   await plugins.register(SetRefPropPlugin);
 
   await plugins.register(SimulatorResizerPlugin);
-
-  await plugins.register(LoadIncrementalAssetsWidgetPlugin);
+  //异步加载资源
+  // await plugins.register(LoadIncrementalAssetsWidgetPlugin);
 
   // 插件参数声明 & 传递，参考：https://lowcode-engine.cn/site/docs/api/plugins#%E8%AE%BE%E7%BD%AE%E6%8F%92%E4%BB%B6%E5%8F%82%E6%95%B0%E7%89%88%E6%9C%AC%E7%A4%BA%E4%BE%8B
   await plugins.register(DataSourcePanePlugin, {
@@ -110,7 +110,7 @@ async function registerPlugins() {
   await plugins.register(CustomSetterSamplePlugin);
 
   // 设计器区域多语言切换
-  await plugins.register(SimulatorLocalePlugin);
+  // await plugins.register(SimulatorLocalePlugin);
 
   await plugins.register(lowcodePlugin);
 };

@@ -1,7 +1,8 @@
+import { message } from 'antd';
 import { IPublicModelPluginContext } from '@alilc/lowcode-types';
 import { injectAssets } from '@alilc/lowcode-plugin-inject';
 import assets from '../../services/assets.json';
-import { getProjectSchema } from '../../services/mockService';
+import {getPageSchemaById, getProjectSchema} from '../../services/mockService';
 const EditorInitPlugin = (ctx: IPublicModelPluginContext, options: any) => {
   return {
     async init() {
@@ -18,9 +19,24 @@ const EditorInitPlugin = (ctx: IPublicModelPluginContext, options: any) => {
 
       await material.setAssets(await injectAssets(assets));
 
-      const schema = await getProjectSchema(scenarioName);
-      // 加载 schema
-      project.importSchema(schema as any);
+      // 从数据库获取页面schema数据
+      const pageInfoObj = await getPageSchemaById()
+      if(pageInfoObj.code === 0){
+        if (pageInfoObj.data.schema !== '' && pageInfoObj.data.schema){
+          const schema = pageInfoObj.data.schema;
+          let databaseSchema = JSON.parse(schema);
+          // 加载 schema
+          project.importSchema(databaseSchema as any);
+        }else {
+          //如果页面还没有设计过，就先加载本地json文件
+          const schema = await getProjectSchema(scenarioName);
+          console.log('初始化时的schema',schema);
+          // 加载 schema
+          project.importSchema(schema as any);
+        }
+      }else{
+        message.error('服务器异常，请稍后重试')
+      }
     },
   };
 }
